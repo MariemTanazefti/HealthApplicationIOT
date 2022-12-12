@@ -8,15 +8,26 @@ const Login = ({ navigation }) => {
   const[password,setPassword]=useState('')
 
 
-  const addData = () => {   
-    axios.post("http://192.168.1.104:8080/health/Login",{
-      email:email,
-      password:password
-    }) 
-    .then(res =>console.log(res.data),
-    navigation.navigate("Home"))
+  const addData = () => { 
+    if (isValid()){
+      axios.post("http://192.168.1.104:8080/health/Login",{
+        email:email,
+        password:password
+      }) 
+      .then(res =>console.log(res.data),
+      navigation.navigate("Home"))
+  
+    }  
+   
+   
     
   }
+  const isValid = () => {
+
+    if (!email.trim() || !password.trim())
+        return alert("Please fill in all fields are required ");
+    return true;
+};
   return (
     <View style={styles.container}>
        <ScrollView>

@@ -1,10 +1,16 @@
 import { View, Text, TextInput,StyleSheet,TouchableOpacity, Pressable,Image, ScrollView } from 'react-native'
-import React,{ useState } from 'react'
+import React,{ useState,useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { AntDesign, Entypo } from "@expo/vector-icons";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Navigation, useIsFocused } from '@react-navigation/native';
+import axios from 'axios';
+import { useNavigation } from '@react-navigation/native';
+
+
 
 
 
@@ -15,6 +21,38 @@ const Account = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const [modalVisibleNumber, setModalVisibleNumber] = useState(false);
     const [loader, setloader] = useState(false);
+    const [name, setName] = useState("");
+    const [email, setEmail]= useState("");
+    const [password, setPassword] =useState("");
+    const [picture,setPicture]= useState(null);
+    const [userData, setuserData] = useState(null);
+    const [state, setState] = useState('valid');
+    const isFocused = useIsFocused()
+//const [user1,setUser]= useState([route.params]);
+    const [data, setData] = useState([]);
+    const navigation=useNavigation()
+
+  
+  const updateData = () => { 
+   
+      axios.put("http://192.168.1.104:8080/health/users/1",{
+        
+        name:name,
+        email:email,
+        password:password
+      }) 
+      .then(res =>console.log(res.data),
+      alert("User updated"),
+      navigation.navigate("Home"))
+  
+    }  
+    
+    
+     
+
+ /*  useEffect(()=>{
+    getUsersbyId();
+  },[]); */
 
 
     const showMode = (currentMode) => { 
@@ -52,11 +90,10 @@ const Account = () => {
           alert("you need to give up permission to work")
         }
       }
-    
-      const handleUpload = (image) => {
+      const handleUpload = (picture) => {
         setloader(true)
         const data = new FormData()
-        data.append('file', image)
+        data.append('file', picture)
         data.append('upload_preset', 'dementia')
         data.append("cloud_name", "elaa")
         fetch("https://api.cloudinary.com/v1_1/elaa/image/upload", {
@@ -66,51 +103,27 @@ const Account = () => {
           then(data => {
             setloader(false)
             console.log(data.url)
-            setImage(data.url)
+            setPicture(data.url)
           }).catch(err => {
             alert("error while uploading")
           })
       }
-    
   return (
     
     
     <SafeAreaView> 
     <View style={styles.container}>
    
-    <Text style={styles.title}>Your informations :</Text>
+    <Text style={styles.title}>Modify your data</Text>
     <View style={styles.form}>
  
-    <TextInput  style={styles.input} placeholder='Name'/>
-    <TextInput  style={styles.input} placeholder='Email'/>
-    <TextInput style={styles.input} placeholder="Password"/>
-    <TouchableOpacity onPress={showDatepicker}>
-        <Entypo style={styles.DateTimePicker} name="clock" size={50} color="#4A0D66" />
-    </TouchableOpacity>
-
-        {show && (
-          <DateTimePicker
-            testID="dateTimePicker"
-            value={date}
-            mode={mode}
-            is24Hour={true}
-            display="spinner"
-            /* onChange={onChange} */
-          />
-        )}
-         <Pressable
-            onPress={() => pickFromGallery()}>
-            {loader == false ? <Entypo name="image" size={40} color="black" /> :
-            <Text>loading</Text>}
-            <Image
-                resizeMode='stretch'
-                style={styles.image}
-                //source={{ uri: image }}
-            />
-        </Pressable>
+    <TextInput  style={styles.input} placeholder='Name' onChangeText={name => setName(name)} value={name}/>
+    <TextInput  style={styles.input} placeholder='Email'onChangeText={email => setEmail(email)} value={email}/>
+    <TextInput style={styles.input} placeholder="Password"  secureTextEntry={true} onChangeText={password => setPassword(password)} value={password}/>
+  
     <View style={[styles.fixToText]}>
-        <TouchableOpacity style={styles.donebutton}>
-           <Text color="white">Update</Text>
+        <TouchableOpacity style={styles.donebutton} onPress={updateData}>
+           <Text style={{color: "white"}}>Update</Text>
         </TouchableOpacity>
     </View>
 

@@ -9,9 +9,10 @@ import File from './src/File';
 import Account from './src/Account';
 import History from './src/History';
 
+const Stack = createNativeStackNavigator();
+
 
 export default function App() {
-  const Stack = createNativeStackNavigator();
   return (
     <NavigationContainer>
       <Stack.Navigator>

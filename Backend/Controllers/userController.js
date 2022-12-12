@@ -11,7 +11,7 @@ const JWT_KEY = process.env.JWT_KEY;
     try {
         console.log("ddd")
       const[ UsersList] = await User.getAll();
-      res.status(200).json({ message: "Operation Succeded", UsersList });
+      res.status(200).json({ UsersList });
     } catch (err) {
       res.status(404).json({
         message: "No Data Found.",
@@ -28,7 +28,7 @@ const JWT_KEY = process.env.JWT_KEY;
     const id = req.params.id;
     console.log(req.params.id)
     const [user1] = await User.findById(id);
-    res.status(200).json({ message: "Operation Succeded", user1 });
+    res.status(200).json({ user1 });
 
 
   }catch(err){
@@ -57,7 +57,7 @@ const JWT_KEY = process.env.JWT_KEY;
     password = req.body.password;
   
     const user1= await User.save(name1,email,password);
-    res.status(201).json({ message: "Operation Succeded", user1 }); 
+    res.status(201).json({  user1 }); 
 
 
    }catch(err){
@@ -83,10 +83,11 @@ const JWT_KEY = process.env.JWT_KEY;
     console.log(name1);
     email = req.body.email;
     password = req.body.password;
-    //profile= "Recruiter";
+   /*  date= req.body.date;
+    picture= req.body.picture */
   
     const user1= await User.update(id,name1,email,password);
-    res.status(201).json({ message: "Operation Succeded", user1 }); 
+    res.status(201).json({ user1 }); 
 
 
    }catch(err){

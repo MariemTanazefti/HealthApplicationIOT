@@ -6,6 +6,8 @@ const WebSocket = require("ws");
 const userRoute=require('./routes/routes')
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
+const mqtt = require("mqtt");
+const {addTemperature,addoxygene,addfrequence,addsteps,addpression}= require('./subscriber')
 
 wss.on("connection", function connection(ws) {
   ws.on("message", function incoming(message, isBinary) {
@@ -16,6 +18,41 @@ wss.on("connection", function connection(ws) {
       }
     });
   });
+});
+var client = mqtt.connect("mqtt://broker.mqttdashboard.com", {
+  protocolId: "MQIsdp",
+  protocolVersion: 3,
+});
+client.subscribe("hc/temp");
+client.subscribe("hc/o2");
+client.subscribe("hc/freq");
+client.subscribe("hc/pres");
+client.subscribe("hc/steps");
+client.on("message", function (topic, message) {
+  switch (topic) {
+    case "hc/temp":
+      addTemperature(message.toString());
+      break;
+    case "hc/o2":
+      addoxygene(message.toString());
+      break;
+    case "hc/freq":
+      addfrequence(message.toString());
+      break;
+    case "hc/pres":
+      addpression(message.toString());
+      break;
+    case "hc/steps":
+      addsteps(message.toString());
+      break;
+  }
+});
+
+client.on("connect", function () {
+  console.log("Connected to mqtt broker");
+});
+app.get("/", function (req, res) {
+  res.send("Hello World!");
 });
 app.use(bodyParser.json());
 app.use(express.json());

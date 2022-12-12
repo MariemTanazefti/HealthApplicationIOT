@@ -1,22 +1,53 @@
 import { View, Text, TextInput, ScrollView, Image,StyleSheet, TouchableOpacity } from 'react-native'
 import React,{useState} from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import axios from 'axios';
 
 const CreateAccount = ({ navigation }) => {
     const [checked, setChecked] = useState('first');
     const[male,setMale]= useState(false);
     const [female,setFemale]=useState(false)
+    const[email,setEmail]=useState('')
+  const[password,setPassword]=useState('')
+  const[name,setName]=useState('')
+  const[age,setAge]=useState('')
+
+  function submitData ()  {
+    if (isValid()){
+      axios.post(`http://192.168.1.104:8080/health/users_add`, {
+     
+        name:name,
+        email:email,
+        password:password,
+        age:age
+    })
+    .then(res => navigation.navigate("Home"))
+  
+    alert("Successful user added!");
+
+    }
+    
+     
+  }
+
+
+    const isValid = () => {
+
+      if (!name.trim() || !email.trim()|| !password.trim()|| !age.trim())
+          return alert("Please fill in all fields are required ");
+      return true;
+  };
   return (
     <SafeAreaView> 
     <View style={styles.container}>
      <Image source={require("./.././assets/imageBg.jpg")} style={styles.image}/>
      <View style={styles.form}>
-     <TextInput  style={styles.input} placeholder='Name'/>
-     <TextInput  style={styles.input} placeholder='Email'/>
-    <TextInput style={styles.input} placeholder="Password"/> 
-     <TextInput  style={styles.input} placeholder='Age'/>
+     <TextInput  style={styles.input} placeholder='Name'onChangeText={text => setName(text)}/>
+     <TextInput  style={styles.input} placeholder='Email' onChangeText={text => setEmail(text)}/>
+    <TextInput style={styles.input} placeholder="Password" onChangeText={text => setPassword(text)}/> 
+     <TextInput  style={styles.input} placeholder='Age' onChangeText={text => setAge(text)}/>
      
-     <TouchableOpacity style={styles.Signupbutton} onPress={() => navigation.navigate("Home")}>
+     <TouchableOpacity style={styles.Signupbutton} onPress={() => submitData()}>
          <Text style={{
                textAlign: "center",
                color: "white",

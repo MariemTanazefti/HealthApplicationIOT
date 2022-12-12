@@ -1,40 +1,52 @@
 import { View, Text, TextInput, ScrollView, Image,StyleSheet, TouchableOpacity } from 'react-native'
-import React,{useState} from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { LinearGradient } from "expo-linear-gradient";
-import { Icon } from "react-native-elements";
+import React,{useState,useEffect} from 'react'
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { NavigationContainer, useIsFocused } from '@react-navigation/native';
 import axios from 'axios';
 
 
 
 
-const Home = ({ navigation }) =>  {
+const Home = ({ route, navigation }) =>  {
+  const [data, setData] = useState([]);
+    const [isLoading, setLoading] = useState(true);
+  const isFocused = useIsFocused();
   const [name,setName]=useState('')
-  
-  const getUserID = () => {   
-    axios.get("http://192.168.1.104:8080/health/users/1",{
-      name:name
-    }) 
-    .then(res =>console.log(res.data.user),
-    console.log("name")
-    )
-    
+  const [userData, setuserData] =useState()
+
+
+/*   const getUsersbyId = async (id) => {
+    try {
+      const response = await fetch(`http://192.168.1.104:8080/health/users/${id}`);
+      const json = await response.json();
+      console.log(json.user1)
+      setData(json.user1.name);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   }
-  return (
+  useEffect(()=>{
+    getUsersbyId();
+  },[id]); */
+
+
+  return (  
    
 
 
     <View >
       <ScrollView>
       
-      <Text style={styles.title}>Welcome{getUserID}</Text>
+      <Text style={styles.title}>Welcome</Text>
 
        
 
-        <View style={{ flex: 6, marginTop:60 }}>
+        <View style={{ flex: 6, marginTop:140 }}>
           <View style={{ flexDirection: "row" }}>
 
-            <View style={{ flex: 2 }} >
+            <View style={{ flex: 3}} >
               <TouchableOpacity 
                 style={{ alignItems: "center" }} onPress={() => navigation.navigate("File")}>
                 <Image
@@ -59,7 +71,7 @@ const Home = ({ navigation }) =>  {
                 <Text style={styles.Title2}>Your account</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={{ alignItems: "center" }} onPress={() => navigation.navigate("History")}>
+              {/*   <TouchableOpacity style={{ alignItems: "center" }} onPress={() => navigation.navigate("History")}>
                 <Image
                   source={require("./.././assets/historique.jpg")}
                   style={{
@@ -68,7 +80,7 @@ const Home = ({ navigation }) =>  {
                     borderRadius: 40 / 2,
                   }} />
                 <Text style={styles.Title2}>Your history</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
 
             
 
