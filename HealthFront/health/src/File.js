@@ -20,6 +20,7 @@ const File = () => {
     const foundIndex = subscribe.findIndex(
       (x) => x.name == value.destinationName
     );
+   
     console.log(foundIndex);
     if (foundIndex != -1) {
       const cpy = [...subscribe];
@@ -32,36 +33,6 @@ const File = () => {
       console.log(cpy);
 
       setSubscribe(cpy);
-      if(el.name="hc/temp"){
-        if(value>40 && value < 36){
-          alert("erreur")
-        }
-      }
-      
-    /*   
-        if(el.name="hc/temp"){
-        if(value>40 && value < 35){
-          alert("Consult a doctor")
-        }
-      } */
-      /* else
-      if(el.name="hc/o2"){
-        if(value < 94){
-          alert("Consult a doctor")
-        }
-      }
-      else
-      if(el.name="hc/freq"){
-        if(value > 100 && value < 50 ){
-          alert("Consult a doctor")
-        }
-      }   
-      else
-      if(el.name="hc/pres"){
-        if(value > 140 && value <100){
-          alert("Consult a doctor")
-        }
-      }   */
      
       
       
@@ -89,7 +60,7 @@ const File = () => {
     <ScrollView style={styles.container} >
       <Text style={{fontSize:40, textAlign:'center', color:"#902cd3", marginBottom:50}}>Today's values </Text>
     {subscribe.map((el, i) => (
-      <View key={i}>
+      <View key={i}style={{marginTop:10}}>
       {el.messages.map((value, index) => (
       <View  key={index}>
    

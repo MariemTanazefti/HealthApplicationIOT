@@ -7,21 +7,26 @@ import CreateAccount from './src/CreateAccount';
 import Home from './src/Home';
 import File from './src/File';
 import Account from './src/Account';
-import History from './src/History';
+import CalculImc from './src/CalculImc';
+import DrinkScreen from './src/DrinkScreen';
 
 const Stack = createNativeStackNavigator();
+
 
 
 export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-      <Stack.Screen name="Login" options={{headerShow: false}} component={Login}/>
+     
+      <Stack.Screen name="Login" options={{headerShow: false}} component={Login}/> 
+      <Stack.Screen name="Home" options={{ headerShown: false,}} component={Home} />
       <Stack.Screen name="CreateAccount" options={{headerShow: false}} component={CreateAccount}/>
-      <Stack.Screen name="Home" options={{headerShow: false}} component={Home}/>
       <Stack.Screen name="File" options={{headerShow: false}} component={File}/>
       <Stack.Screen name="Account" options={{headerShow: false}} component={Account}/>
-      <Stack.Screen name="History" options={{headerShow: false}} component={History}/>
+      <Stack.Screen name="CalculImc" options={{headerShow: false}} component={CalculImc}/>
+      <Stack.Screen name="DrinkScreen" options={{headerShow: false}} component={DrinkScreen}/>
+
 
 
       </Stack.Navigator>

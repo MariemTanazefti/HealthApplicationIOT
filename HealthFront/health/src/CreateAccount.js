@@ -14,7 +14,7 @@ const CreateAccount = ({ navigation }) => {
 
   function submitData ()  {
     if (isValid()){
-      axios.post(`http://192.168.1.104:8080/health/users_add`, {
+      axios.post(`http://172.16.13.195:8080/health/users_add`, {
      
         name:name,
         email:email,

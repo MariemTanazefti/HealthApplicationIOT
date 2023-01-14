@@ -4,12 +4,6 @@ const mqtt = require('mqtt')
 var client  = mqtt.connect('mqtt://broker.hivemq.com');
 
 
-/* let temperature=parseFloat(37.7);
-let oxyegene = parseFloat(99);
-let freq=parseFloat(80);
-let pression=parseFloat(12);
-let distance=parseFloat(99);
-let OX; */
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -75,16 +69,6 @@ function addsteps(value){
     }
 
 
-/* client.on('connect',function()
-{   
-    client.subscribe("hc/temp");
-    client.subscribe("hc/o2");
-    client.subscribe("hc/freq");
-    client.subscribe("hc/pres");
-    client.subscribe("hc/steps");
-    print("Receiving...")
-}
-) */
 
 module.exports = {
    addTemperature,

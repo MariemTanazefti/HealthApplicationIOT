@@ -14,7 +14,11 @@ import { useNavigation } from '@react-navigation/native';
 
 
 
-const Account = () => {
+const Account = (route) => {
+  const [userData, setuserData] =useState(null)
+  const [user,setUser]= useState([]);
+
+
     const [date, setDate] = useState(new Date(1598051730000));
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
@@ -25,17 +29,21 @@ const Account = () => {
     const [email, setEmail]= useState("");
     const [password, setPassword] =useState("");
     const [picture,setPicture]= useState(null);
-    const [userData, setuserData] = useState(null);
     const [state, setState] = useState('valid');
     const isFocused = useIsFocused()
 //const [user1,setUser]= useState([route.params]);
     const [data, setData] = useState([]);
     const navigation=useNavigation()
+    const [JobsList, setJobList] = useState([])
+    const [isLoading, setLoading] = useState(true);
+
+
+
 
   
   const updateData = () => { 
    
-      axios.put("http://192.168.1.104:8080/health/users/1",{
+      axios.put("http://172.16.13.195:8080/health/users/1",{
         
         name:name,
         email:email,
@@ -46,13 +54,24 @@ const Account = () => {
       navigation.navigate("Home"))
   
     }  
-    
-    
-     
-
- /*  useEffect(()=>{
-    getUsersbyId();
-  },[]); */
+    useEffect(() => {
+      //AsyncStorage.getItem('user', (err, item) => {setuserData (JSON.parse(item)) ;console.log("++++++"+item)})
+      geUserById();
+      console.log(user);
+    }, []);
+  
+    function geUserById(){
+      AsyncStorage.getItem('user')
+      .then(value => {
+      axios.get(`http://192.168.1.104:8090/health/users/`)
+        .then((res) => {
+          console.log(res.status)
+          if (res.data != null)
+            setUser(res.data);
+        })
+      })
+  
+    };
 
 
     const showMode = (currentMode) => { 
@@ -117,9 +136,9 @@ const Account = () => {
     <Text style={styles.title}>Modify your data</Text>
     <View style={styles.form}>
  
-    <TextInput  style={styles.input} placeholder='Name' onChangeText={name => setName(name)} value={name}/>
-    <TextInput  style={styles.input} placeholder='Email'onChangeText={email => setEmail(email)} value={email}/>
-    <TextInput style={styles.input} placeholder="Password"  secureTextEntry={true} onChangeText={password => setPassword(password)} value={password}/>
+    <TextInput  style={styles.input} placeholder='Name' onChangeText={Name => setName(Name)} value={name}/>
+    <TextInput  style={styles.input} placeholder='Email'onChangeText={Email => setEmail(Email)} value={email}/>
+    <TextInput style={styles.input} placeholder="Password"  secureTextEntry={true} onChangeText={Password => setPassword(Password)} value={password}/>
   
     <View style={[styles.fixToText]}>
         <TouchableOpacity style={styles.donebutton} onPress={updateData}>
@@ -165,19 +184,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         padding: 20,
       },
-    /*   image: {
-        justifyContent: "center",
-        padding: "30%",
-        width: "50%",
-        height: "50%",
-        borderRadius: 40 / 2,
-      },
-      DateTimePicker: {
-        alignItems: "center",
-        backgroundColor: "white",
-        borderRadius: 50,
-        padding: "5%"
-      } */
       donebutton: {
         alignItems: "center",
         justifyContent: "center",

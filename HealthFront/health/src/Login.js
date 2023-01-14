@@ -10,7 +10,7 @@ const Login = ({ navigation }) => {
 
   const addData = () => { 
     if (isValid()){
-      axios.post("http://192.168.1.104:8080/health/Login",{
+      axios.post("http://172.16.13.195:8080/health/Login",{
         email:email,
         password:password
       }) 
